@@ -4,7 +4,7 @@ import ContentCard from "../components/ContentCard";
 
 function Homepage() {
     return (
-        <div className="flex flex-col justify-center h-screen place-items-center">
+        <div className="flex flex-col justify-center h-screen place-items-center bg-background-yellow">
             <Card />
             <ContentCard />
         </div>

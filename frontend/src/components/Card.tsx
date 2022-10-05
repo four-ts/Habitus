@@ -9,7 +9,7 @@ function Card() {
 
     return (
         <div
-            className="card w-8/12 bg-base-100 shadow-xl"
+            className="card w-8/12 bg-base-100 shadow-xl hover:bg-background-yellow"
             onClick={() => {
                 history("/friendGoal");
             }}

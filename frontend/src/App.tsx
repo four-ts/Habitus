@@ -11,20 +11,6 @@ function App() {
             <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/friendGoal" element={<FriendGoals />} />
-                {/* <div className="bg-background-yellow h-screen">
-                    <div className="card-title justify-center pt-10">Hi User!</div>
-                    <Route path="/" element={<Homepage />} />
-                    <Route path="/friendGoal" element={<FriendGoals />} />
-
-                    <div className="flex flex-row absolute right-2 bottom-2 gap-4 hover:text-black">
-                        <button className="p-5 hover:bg-blue rounded-full bg-yellow text-background-yellow">
-                            <FontAwesomeIcon icon={faUser} />
-                        </button>
-                        <button className="p-5 bg-blue rounded-full hover:bg-yellow text-background-yellow">
-                            <FontAwesomeIcon icon={faUserGroup} />
-                        </button>
-                    </div>
-                </div> */}
             </Routes>
         </BrowserRouter>
     );

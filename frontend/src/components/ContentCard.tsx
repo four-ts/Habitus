@@ -5,8 +5,8 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 function ContentCard() {
     return (
-        <div>
-            <h1 className="card-title">Your Feed</h1>
+        <div className="flex flex-col py-10 items-center">
+            <h1 className="card-title ">Your Feed</h1>
             <div className="card w-8/12 bg-base-100 shadow-xl">
                 <div id="title-header" className="grid grid-cols-3 items-center text-center">
                     <FontAwesomeIcon className="col-span-1 p-12" icon={faUser} />
