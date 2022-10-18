@@ -1,9 +1,7 @@
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { Camera, CameraType } from 'expo-camera';
-import { Image, View, ImageBackground, TouchableOpacity, TextInput } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, TouchableOpacity } from 'react-native';
 
 import { Button, Text } from 'react-native-paper';
 import tw from 'twrnc';
@@ -54,7 +52,7 @@ const CameraScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={tw``}>
+        <View style={tw`flex bg-[#FAF0E4] `}>
             {preview && photo ? (<CameraPreview style={tw`mb-10`} navigation={navigation} image={photo} retakePicture={retakePhoto} description={description} setDescription={setDescription} />
             ) : (
                 <>
@@ -90,7 +88,7 @@ const CameraScreen = ({ navigation }) => {
                         </View>
                     </Camera>
 
-                    <View style={tw`items-center`}>
+                    <View style={tw`items-center mb-8`}>
                         <Button
                             mode="contained"
                             compact={false}

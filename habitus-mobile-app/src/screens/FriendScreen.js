@@ -1,8 +1,6 @@
 
-import React, { useState, useEffect, } from 'react'
-import { Image, View, ScrollView, } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { db } from '../../firebase';
+import React from 'react'
+import { View, ScrollView, } from 'react-native';
 import { Button, Text, Card } from 'react-native-paper';
 import tw from 'twrnc';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const FriendScreen = ({ navigation }) => {
 
     return (
-        <View style={tw`mt-20`}>
+        <View style={tw`w-full bg-[#FAF0E4] h-300 pt-10 `}>
             <ScrollView style={tw``}>
                 <View>
                     <View style={tw`flex flex-row justify-between text-center items-center`}>
@@ -79,7 +77,7 @@ const FriendScreen = ({ navigation }) => {
                         </Card.Content>
                     </Card >
                 </View>
-                <View style={tw`mt-10 mb-20`}>
+                <View style={tw`mt-10 mb-140`}>
                     <Card style={tw`bg-[#FFE2BE]`} elevation={10}>
                         <Card.Content>
                             <View style={tw`flex flex-row justify between items-center`}>

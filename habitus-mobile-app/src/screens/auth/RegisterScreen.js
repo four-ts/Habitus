@@ -31,7 +31,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={tw`mt-13`}>
+    <View style={tw`pt-13 bg-[#FAF0E4] h-100`}>
 
       <>
         <Text style={tw`font-bold justify-start text-left pl-10 pb-2`}>First Name</Text>

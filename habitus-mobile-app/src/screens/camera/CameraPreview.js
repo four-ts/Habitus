@@ -50,9 +50,12 @@ const CameraPreview = ({ navigation, image, retakePicture, description, setDescr
                 <Text style={tw`text-lg justify-start text-left px-5 mb-2 `}>Caption:</Text>
                 <View style={tw`flex w-full pb-2 px-5`}>
                     <TextInput
-                        style={tw`bg-white w-full h-13`}
+                        style={tw`bg-gray-200 pl-3 w-full h-13`}
                         placeholder=' Enter Caption...'
-                        mode="outlined"
+                        mode="flat"
+                        selectionColor={colors.blue}
+                        activeUnderlineColor={colors.blue}
+                        underlineColor={colors.yellow}
                         onChangeText={(description) => setDescription(description)}
                         value={description}
                     />

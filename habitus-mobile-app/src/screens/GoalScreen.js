@@ -46,7 +46,7 @@ const GoalScreen = ({ navigation }) => {
         getGoal();
     }, [])
     return (
-        <View>
+        <View style={tw`pt-13 bg-[#FAF0E4] h-100`}>
             <ScrollView>
 
                 <Card>

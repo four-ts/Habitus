@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ScrollView, View, } from 'react-native';
 import { db } from '../../../firebase';
 import { DatePickerModal } from 'react-native-paper-dates';
-import { TextInput, Button, Text, Paragraph, Dialog, Portal, Provider, Menu, Divider, List } from 'react-native-paper';
+import { TextInput, Button, Text, Paragraph, Dialog, Portal, List } from 'react-native-paper';
 import { CreateTaskObject } from "../../assets/types/Task";
 import tw from 'twrnc';
 import { colors } from "../../assets/colors";
@@ -11,30 +11,24 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const CreateMilestoneScreen = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const [goalTitle, setGoalTitle] = useState();
-
     const [milestoneTitle, setMilestoneTitle] = useState("");
     const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
-
-
     const [taskView, setTaskView] = useState(false);
     const [taskName, setTaskName] = useState('');
     const [weeklyFreq, setWeeklyFreq] = useState({ mon: false, tue: false, wed: false, thu: false, fri: false, sat: false, sun: false })
     const [frequency, setFrequency] = useState('');
-
     const [frequencyMenu, setFrequencyMenu] = useState(false);
     const [goalDocID, setGoalDocId] = useState();
     const [tasks, setTasks] = useState([]);
 
     const getGoal = async () => {
         var docRef = await db.collection("goal").get();
-        var docId = docRef.docs[0].id
-        setGoalDocId(docId);
         // get 
-        var doc = db.collection("goal").doc(docId);
+        var doc = db.collection("goal").doc("uniqueGoal");
 
         doc.get().then((doc) => {
             if (doc.exists) {
-                setGoalTitle(doc.data()["title"]);
+                setGoalTitle(doc.data()["goalObject"]["title"]);
             } else {
                 console.log("No such document!");
             }
@@ -114,7 +108,8 @@ const CreateMilestoneScreen = ({ navigation }) => {
         getGoal();
     }, [taskView])
     return (
-        <View style={tw`w-full`}>
+
+        <View style={tw`w-full bg-[#FAF0E4] h-300`}>
             <ScrollView >
                 <View style={tw`bg-amber-500 px-5`}>
                     <Text style={tw`font-bold pt-4 pb-2`}>Goal:</Text>
@@ -128,7 +123,10 @@ const CreateMilestoneScreen = ({ navigation }) => {
                     <TextInput
                         style={tw`w-full`}
                         label="Enter new milestone"
-                        mode="outlined"
+                        mode="flat"
+                        selectionColor={colors.blue}
+                        activeUnderlineColor={colors.blue}
+                        underlineColor={colors.yellow}
                         onChangeText={(name) => setMilestoneTitle(name)}
                         value={milestoneTitle}
                     />
@@ -138,7 +136,7 @@ const CreateMilestoneScreen = ({ navigation }) => {
                     <Text style={tw`justify-start text-left px-5 pb-2 font-bold pt-6`}>How long will it take?</Text>
                     <View style={tw``}>
                         <View
-                            style={tw`flex flex-row items-center bg-[#FAF0E4] mx-8 justify-between`}
+                            style={tw`flex flex-row items-center bg-gray-200 px-2 mx-5 justify-between`}
                             onPress={() => { setOpen(!open) }}
                         >
                             <Text

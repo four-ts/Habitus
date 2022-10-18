@@ -11,7 +11,7 @@ const TextScreen = ({ navigation }) => {
     const [text, setText] = useState();
 
     return (
-        <View style={tw`mt-0`}>
+        <View style={tw`w-full bg-[#FAF0E4] h-300`}>
             <ScrollView style={tw``}>
                 <View>
                     <View style={tw`flex flex-row justify-between text-center items-center`}>
