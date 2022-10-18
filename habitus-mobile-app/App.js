@@ -16,6 +16,9 @@ import CreateMilestoneScreen from './src/screens/create/CreateMilestone';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CameraScreen from './src/screens/camera/CameraScreen';
 import tw from 'twrnc';
+import FriendScreen from './src/screens/FriendScreen';
+import TextScreen from './src/screens/TextScreen';
+import GoalScreen from './src/screens/GoalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +28,6 @@ export default function App() {
   auth.onAuthStateChanged((user) => {
     if (user) {
       setUserId(user.getIdToken());
-      console.log(user.getIdToken())
       setSignedIn(true);
     } else {
       setSignedIn(false);
@@ -49,6 +51,7 @@ export default function App() {
         },
       })}
 
+
     >
 
       <Tab.Screen
@@ -69,11 +72,20 @@ export default function App() {
           ),
         }}
         component={CameraScreen} />
-      <Tab.Screen name="milestone" component={CreateMilestoneScreen} />
-      <Tab.Screen name="create-goal-screen" component={CreateGoalScreen} />
+      <Tab.Screen
+        name="friend"
+        component={FriendScreen}
+        options={{
+          tabBarLabel: "friends",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="users" color={color} size={28} />
+          ),
+        }}
+      />
 
     </ Tab.Navigator>
   }
+
   return (
     <PaperProvider>
       <NavigationContainer>
@@ -93,6 +105,7 @@ export default function App() {
                 },
               }}
             />
+
             <Stack.Screen
               name="register"
               component={RegisterScreen}
@@ -105,7 +118,7 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="createGoal"
+              name="createGoalScreen"
               component={CreateGoalScreen}
               options={{
                 title: 'Create a Goal',
@@ -126,12 +139,42 @@ export default function App() {
                 headerTintColor: '#fff',
               }}
             />
+
             <Stack.Screen
               name="home"
               component={HomeTabs}
               options={{ headerLeft: (props) => null, headerShown: false }}
             />
-          </Stack.Navigator>)
+            <Stack.Screen
+              name="friend"
+              component={FriendScreen}
+              options={{ headerLeft: (props) => null, headerShown: false }}
+            />
+            <Stack.Screen
+              name="text"
+              component={TextScreen}
+              options={{
+                title: ' ',
+                headerStyle: {
+                  backgroundColor: "#E9C273",
+                },
+                headerTintColor: '#fff',
+              }}
+            />
+
+            <Stack.Screen
+              name="goal"
+              component={GoalScreen}
+              options={{
+                title: ' ',
+                headerStyle: {
+                  backgroundColor: "#FAF0E4",
+                },
+                headerTintColor: '#fff',
+              }}
+            />
+          </Stack.Navigator>
+          )
         }
       </NavigationContainer>
 

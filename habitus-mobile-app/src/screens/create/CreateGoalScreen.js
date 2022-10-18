@@ -27,8 +27,7 @@ const CreateGoalScreen = ({ navigation }) => {
         endDate: goal.endDate,
         // partner: ,
       }
-      const ref = db.collection('goal');
-      await ref.add(goalObject);
+      const ref = db.collection('goal').doc("uniqueGoal").set({ goalObject });
 
       navigation.navigate('createMilestone');
     } catch (e) {
@@ -49,13 +48,13 @@ const CreateGoalScreen = ({ navigation }) => {
   );
 
   return (
-    <ScrollView style={tw`h-full bg-${colors.primaryBg} mt-20`}>
+    <ScrollView style={tw`h-full bg-[##FAF0E4] mt-20`}>
 
       <Text style={tw`justify-start text-left pl-10 pb-2  text-xl`}>The Goal is to...</Text>
-      <View style={tw`flex justify-center items-center w-full pb-10 `}>
+      <View style={tw`flex justify-center items-center w-full pb-10`}>
         <TextInput
-          style={tw`w-5/6`}
-          label="Enter Goal"
+          style={tw`w-5/6 mb-10`}
+          placeholder="Enter Goal"
           mode="outlined"
           onChangeText={(input) => {
             setGoalName(input);
@@ -65,14 +64,14 @@ const CreateGoalScreen = ({ navigation }) => {
         />
       </View>
       <Text style={tw`justify-start text-left pl-10 pb-2 text-xl`}>How long will it take?</Text>
-      <View style={tw`flex justify-center w-full pb-10 `}>
+      <View style={tw`flex justify-center w-full pb-10 `} onPress={() => { setOpen(!open); console.log("Pressed!") }}>
         <View
           style={tw`flex flex-row items-center bg-slate-200 mx-8 justify-between`}
-          onPress={() => { setOpen(!open) }}
+          onPress={() => { setOpen(!open); }}
         >
           <Text
             style={tw`pl-2 pb-2 text-xl pt-3`}
-            onPress={() => { setOpen(!open) }} >
+            onPress={() => { setOpen(!open); }} >
             {(!goal.startDate) ? "Add Dates" :
               new Date(goal.startDate).toLocaleDateString("en-GB") + '  -  ' + new Date(goal.endDate).toLocaleDateString("en-GB")}
 

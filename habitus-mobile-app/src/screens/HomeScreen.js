@@ -13,16 +13,17 @@ const HomeScreen = ({ navigation }) => {
     const [title, setTitle] = useState("");
     const [tasks, setTasks] = useState([]);
     const [docId, setDocId] = useState();
-
+    const [photos, setPhotos] = useState([]);
+    const [toggleLike, setToggleLike] = useState(true);
     const getGoalInfo = async () => {
         var docRef = await db.collection("goal").get();
         if (docRef != undefined) {
             setDocId(docRef.docs[0].id);
-            var doc = db.collection("goal").doc(docId);
+            var doc = db.collection("goal").doc("uniqueGoal");
 
             doc.get().then((fields) => {
                 if (fields.exists) {
-                    setTitle(fields.data()["milestone"]["title"]);
+                    setTitle(fields.data()["goalObject"]["title"]);
                     setTasks(fields.data()["milestone"]["tasks"])
                 } else {
                     console.log("No such document!");
@@ -34,15 +35,30 @@ const HomeScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
-        getGoalInfo();
+        // getGoalInfo();
     }, [tasks])
 
-    // const getPhotos = () => {
 
-    // }
+    useEffect(() => {
+        getPhotos();
+    }, [])
+    const getPhotos = async () => {
+        const photosInfo = await db.collection("photos").get();
+        photosInfo.forEach(photoInfo => {
+            const rawInfo = photoInfo.data();
+            const singlePhoto = { rawInfo, id: photoInfo.id }
+            setPhotos([...photos, singlePhoto]);
+        });
+    }
+
+    const addLike = async (docID) => {
+        const photoInfo = await (await db.collection("photos").doc(docID).get()).data();
+        photoInfo["likes"] += 1;
+        await db.collection("photos").doc(docID).set(photoInfo);
+    }
 
     async function setTaskCompleted(taskIndex) {
-        var goalDoc = db.collection("goal").doc(docId);
+        var goalDoc = db.collection("goal").doc("uniqueGoal");
         goalDoc.get().then((fields) => {
             if (fields.exists) {
                 const goalDocTasks = fields.data()
@@ -60,8 +76,8 @@ const HomeScreen = ({ navigation }) => {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-
     }
+
     return (
         <ScrollView style={{ flex: 1, padding: 10 }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={tw`mt-15 mb-250`}>
@@ -107,7 +123,48 @@ const HomeScreen = ({ navigation }) => {
                     </Card.Actions>
                 </Card >
                 <Text style={tw`text-xl font-bold pb-4 mx-5 mt-6`}>Your Feed </Text>
-                <View style={tw`bg-yellow-200 p-3`}>
+
+                <View style={tw`bg-yellow-200 p-3 `}>
+                    {photos != [] &&
+                        <>
+                            {
+                                photos.map((photo, index) => {
+                                    return (
+                                        <View style={tw`my-5`} key={index}>
+                                            <View style={tw`flex flex-row justify-between `}>
+                                                <Icon name="certificate" size={24} color="black" />
+                                                <View style={tw` ml-2`}>
+                                                    <Text style={tw`text-lg  `}>{photo["rawInfo"]["userName"]} </Text>
+                                                    <Text style={tw``}>Goal Partner: Sarah Smith </Text>
+                                                    <Text style={tw`text-sm   text-slate-800`}>{photo["rawInfo"]["milestoneTitle"]} </Text>
+                                                </View>
+                                                <View style={tw`flex flex-col items-center mt-3`}>
+                                                    <Icon name="heart" size={24} color={toggleLike ? "black" : "red"} />
+                                                    <Text style={tw`text-lg  mx-5 `}>{photo["rawInfo"]["likes"]}</Text>
+                                                </View>
+                                            </View>
+
+                                            <Text style={tw`text-lg mx-5 mt-8 mb-4`}>Worked out today!! </Text>
+                                            <Image
+                                                style={tw`h-100 mx-5 rounded-lg `}
+                                                source={{ uri: photo["rawInfo"]["uri"] }}
+                                            />
+                                            <View style={tw`items-end`}>
+                                                <Button labelStyle={tw`text-blue-400`} style={tw`rounded-lg mt-3 border-[#5C82DC] border-2 mx-5 mb-6 w-2/6`}
+                                                    onPress={() => { if (toggleLike) { addLike(photo["id"]) } setToggleLike(!toggleLike) }}
+                                                >
+                                                    Like
+                                                </Button>
+                                            </View>
+                                        </View>
+                                    );
+
+                                })
+                            }
+                        </>
+                    }
+                </View>
+                <View style={tw`bg-yellow-200 p-3 mb-10 mt-10`}>
                     <View style={tw`flex flex-row justify-between `}>
                         <Icon name="certificate" size={24} color="black" />
                         <View style={tw` ml-2`}>
@@ -136,7 +193,7 @@ const HomeScreen = ({ navigation }) => {
 
 
             </View >
-        </ScrollView>
+        </ScrollView >
     )
 };
 export default HomeScreen;

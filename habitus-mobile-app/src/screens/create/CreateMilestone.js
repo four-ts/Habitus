@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, View, FlatList, ListView } from 'react-native';
-import { useForm, Controller, set } from 'react-hook-form';
+import { ScrollView, View, } from 'react-native';
 import { db } from '../../../firebase';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { TextInput, Button, Text, Paragraph, Dialog, Portal, Provider, Menu, Divider, List } from 'react-native-paper';
@@ -90,9 +89,12 @@ const CreateMilestoneScreen = ({ navigation }) => {
     }
 
     const onSubmit = async () => {
-        var goalDoc = db.collection("goal").doc(goalDocID);
+        var goalDoc = db.collection("goal").doc("uniqueGoal");
+        const goalInfo = (await goalDoc.get()).data();
         var mileStoneTasks = makeMileStoneTasks(tasks);
-        await goalDoc.set({ milestone: { title: milestoneTitle, isCompleted: false, startDate: range.startDate, endDate: range.endDate, tasks: mileStoneTasks } }, { merge: true })
+        var time = new Date();
+
+        await goalDoc.set({ goal: goalInfo, timestamp: time, milestone: { title: milestoneTitle, isCompleted: false, startDate: range.startDate, endDate: range.endDate, tasks: mileStoneTasks } }, { merge: true })
         navigation.navigate("home")
     }
     const onDismiss = React.useCallback(() => {
@@ -189,98 +191,111 @@ const CreateMilestoneScreen = ({ navigation }) => {
                     </>
 
                 }
+                <View>
+                    <View style={tw`items-center`}>
+                        <Button
+                            mode="outlined"
+                            compact={false}
+                            color={colors.blue}
+                            labelStyle={{ color: colors.blue }}
+                            onPress={() => { setTaskView(!taskView) }}
+                            style={tw`w-4/6 rounded-full py-2 mt-4 mb-10 border-blue-400`}
+                        >
+                            <Icon name="plus" size={24} color={colors.blue} />
+                        </Button>
+                    </View>
+                    <Portal>
+                        <Dialog visible={taskView} onDismiss={() => { setTaskView(!taskView) }} style={tw`rounded-lg`}>
+                            <Dialog.Content>
+                                <Text style={tw`font-bold text-lg pb-6`}>Create a Task!</Text>
 
-                <Portal>
-                    <Dialog visible={taskView} onDismiss={() => { setTaskView(!taskView) }} style={tw`rounded-lg`}>
-                        <Dialog.Content>
-                            <Text style={tw`font-bold text-lg pb-6`}>Create a Task!</Text>
+                                <Paragraph style={tw`justify-start text-left pb-2 font-bold `}>Enter a task name</Paragraph>
 
-                            <Paragraph style={tw`justify-start text-left pb-2 font-bold `}>Enter a task name</Paragraph>
+                                <TextInput
+                                    label="task..."
+                                    mode="outlined"
+                                    style={tw`bg-slate-100/60`}
+                                    outlineColor="black"
+                                    underlineColor={colors.blue}
+                                    activeOutlineColor={colors.blue}
+                                    selectionColor={colors.blue}
+                                    onChangeText={(taskName) => setTaskName(taskName)}
+                                    value={taskName}
+                                />
 
-                            <TextInput
-                                label="task..."
-                                mode="outlined"
-                                style={tw`bg-slate-100/60`}
-                                outlineColor="black"
-                                underlineColor={colors.blue}
-                                activeOutlineColor={colors.blue}
-                                selectionColor={colors.blue}
-                                onChangeText={(taskName) => setTaskName(taskName)}
-                                value={taskName}
-                            />
+                                <List.Section >
+                                    <Text style={tw`font-bold py-4`}>Frequency of task</Text>
 
-                            <List.Section >
-                                <Text style={tw`font-bold py-4`}>Frequency of task</Text>
+                                    <List.Accordion
+                                        style={tw`bg-slate-50 rounded-lg`}
+                                        title={frequency == '' ? "Select" : frequency}
+                                        right={props => <List.Icon {...props} icon="chevron-down" />}
+                                        expanded={frequencyMenu}
+                                        onPress={() => { setFrequencyMenu(!frequencyMenu) }}>
+                                        <List.Item title="Daily" style={tw`bg-slate-100`} onPress={() => { setFrequency("daily"); setFrequencyMenu(!frequencyMenu); }} />
+                                        <List.Item title="Weekly" style={tw`bg-slate-200`} onPress={() => { setFrequency("weekly"); setFrequencyMenu(!frequencyMenu) }} />
+                                        <List.Item title="Fortnightly" style={tw`bg-slate-300`} onPress={() => { setFrequency("fortnightly"); setFrequencyMenu(!frequencyMenu) }} />
+                                        <List.Item title="Monthly" style={tw`bg-slate-400`} onPress={() => { setFrequency("monthly"); setFrequencyMenu(!frequencyMenu) }} />
+                                    </List.Accordion>
+                                </List.Section>
+                                <Text style={tw`font-bold py-4`}>When will you complete this task?</Text>
+                                <View style={tw`flex-row justify-between`}>
+                                    <Button mode={"elevated"}
+                                        labelStyle={tw`${weeklyFreq.mon ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.mon ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: !weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        M
+                                    </Button>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.tue ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.tue ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: !weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        T
+                                    </Button>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.wed ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.wed ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: !weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        W
+                                    </Button>
+                                </View>
+                                <View style={tw`flex-row justify-between pt-4`}>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.thu ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.thu ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: !weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        T
+                                    </Button>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.fri ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.fri ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: !weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        F
+                                    </Button>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.sat ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.sat ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: !weeklyFreq.sat, sun: weeklyFreq.sun })}>
+                                        S
+                                    </Button>
+                                    <Button mode="elevated"
+                                        labelStyle={tw`${weeklyFreq.sun ? "text-white" : "text-black"}`}
+                                        style={tw`${weeklyFreq.sun ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
+                                        onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: !weeklyFreq.sun })}>
+                                        S
+                                    </Button>
+                                </View>
+                            </Dialog.Content>
 
-                                <List.Accordion
-                                    style={tw`bg-slate-50 rounded-lg`}
-                                    title={frequency == '' ? "Select" : frequency}
-                                    right={props => <List.Icon {...props} icon="chevron-down" />}
-                                    expanded={frequencyMenu}
-                                    onPress={() => { setFrequencyMenu(!frequencyMenu) }}>
-                                    <List.Item title="Daily" style={tw`bg-slate-100`} onPress={() => { setFrequency("daily"); setFrequencyMenu(!frequencyMenu); }} />
-                                    <List.Item title="Weekly" style={tw`bg-slate-200`} onPress={() => { setFrequency("weekly"); setFrequencyMenu(!frequencyMenu) }} />
-                                    <List.Item title="Fortnightly" style={tw`bg-slate-300`} onPress={() => { setFrequency("fortnightly"); setFrequencyMenu(!frequencyMenu) }} />
-                                    <List.Item title="Monthly" style={tw`bg-slate-400`} onPress={() => { setFrequency("monthly"); setFrequencyMenu(!frequencyMenu) }} />
-                                </List.Accordion>
-                            </List.Section>
-                            <Text style={tw`font-bold py-4`}>When will you complete this task?</Text>
-                            <View style={tw`flex-row justify-between`}>
-                                <Button mode={"elevated"}
-                                    labelStyle={tw`${weeklyFreq.mon ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.mon ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: !weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    M
-                                </Button>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.tue ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.tue ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: !weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    T
-                                </Button>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.wed ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.wed ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: !weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    W
-                                </Button>
-                            </View>
-                            <View style={tw`flex-row justify-between pt-4`}>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.thu ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.thu ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: !weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    T
-                                </Button>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.fri ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.fri ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: !weeklyFreq.fri, sat: weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    F
-                                </Button>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.sat ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.sat ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: !weeklyFreq.sat, sun: weeklyFreq.sun })}>
-                                    S
-                                </Button>
-                                <Button mode="elevated"
-                                    labelStyle={tw`${weeklyFreq.sun ? "text-white" : "text-black"}`}
-                                    style={tw`${weeklyFreq.sun ? "bg-[#D2651E]" : "bg-[#D9D9D9]"}`}
-                                    onPress={() => setWeeklyFreq({ mon: weeklyFreq.mon, tue: weeklyFreq.tue, wed: weeklyFreq.wed, thu: weeklyFreq.thu, fri: weeklyFreq.fri, sat: weeklyFreq.sat, sun: !weeklyFreq.sun })}>
-                                    S
-                                </Button>
-                            </View>
-                        </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button
+                                    labelStyle={tw`text-[#5C82DC]`}
+                                    onPress={() => { setTaskView(!taskView); createTask(); }}>Create Task</Button>
+                            </Dialog.Actions>
+                        </Dialog>
 
-                        <Dialog.Actions>
-                            <Button
-                                labelStyle={tw`text-[#5C82DC]`}
-                                onPress={() => { setTaskView(!taskView); createTask(); }}>Create Task</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-
-                </Portal>
+                    </Portal>
+                </View>
                 <View style={tw`items-center`}>
                     <Button
                         mode="contained"

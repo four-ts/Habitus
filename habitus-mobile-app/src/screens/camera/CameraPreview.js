@@ -12,8 +12,12 @@ const CameraPreview = ({ navigation, image, retakePicture, description, setDescr
 
     const postPhoto = async () => {
         try {
+            const userInfo = (await db.collection('users').doc("88").get()).data();
+            const milestoneInfo = await (await db.collection("goal").doc("uniqueGoal").get()).data();
+
             const photo = {
-                // uid: title,
+                milestoneTitle: milestoneInfo["milestone"]["title"],
+                userName: userInfo["fname"],
                 uri: image.uri,
                 description: description,
                 likes: 0,
