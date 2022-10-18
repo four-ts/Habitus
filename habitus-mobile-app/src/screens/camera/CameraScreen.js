@@ -3,9 +3,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Camera, CameraType } from 'expo-camera';
 import { Image, View, ImageBackground, TouchableOpacity, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { Button, Text } from 'react-native-paper';
 import tw from 'twrnc';
 import CameraPreview from './CameraPreview';
+import { colors } from "../../assets/colors";
 
 const CameraScreen = ({ navigation }) => {
     let camera;
@@ -51,40 +54,58 @@ const CameraScreen = ({ navigation }) => {
     }
 
     return (
-        <View>
+        <View style={tw``}>
             {preview && photo ? (<CameraPreview style={tw`mb-10`} navigation={navigation} image={photo} retakePicture={retakePhoto} description={description} setDescription={setDescription} />
             ) : (
-                <Camera style={tw`mt-10`} type={type} ref={(r) => {
-                    camera = r
-                }}>
-                    <View style={tw`h-full`} >
-                        <TouchableOpacity
-                            onPress={toggleCameraType}
-                            style={{
-                                marginTop: 20,
-                                borderRadius: '50%',
-                                height: 25,
-                                width: 25
-                            }}
+                <>
+                    <View style={tw` items-center`} >
+                        <Text
+                            style={tw` mt-15 text-lg text-black font-bold`}
                         >
-                            <Text
-                                style={{
-                                    fontSize: 20
-                                }}
-                            >
-                                {type === 'front' ? '?' : '?'}
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            width: 70,
-                            height: 70,
-                            bottom: 0,
-                            borderRadius: 50,
-                            backgroundColor: '#fff'
-                        }} onPress={() => { takePhoto() }}>
-                        </TouchableOpacity>
+                            New Post
+                        </Text>
+                        <Text
+                            style={tw`text-gray-700`}
+                        >
+                            Showcase your Accomplishments!
+                        </Text>
                     </View>
-                </Camera>)}
+                    <Camera style={tw`mt-5`} type={type} ref={(r) => {
+                        camera = r
+                    }}>
+                        <View style={tw`h-100`} >
+
+                        </View>
+                        <View style={tw`items-end mr-5 `}>
+                            <TouchableOpacity
+                                onPress={toggleCameraType}
+                                style={tw`w-1/6 rounded-lg py-2 mb-5 bg-gray-50/20 `}
+                            >
+                                <Text
+                                    style={tw`items-center text-center text-lg text-slate-500`}
+                                >
+                                    Flip
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Camera>
+
+                    <View style={tw`items-center`}>
+                        <Button
+                            mode="contained"
+                            compact={false}
+                            color={colors.blue}
+                            buttonColor="#fff"
+                            labelStyle={{ color: "white" }}
+                            onPress={() => { takePhoto() }}
+                            style={tw`w-4/6 rounded-full py-2 mt-15 mb-10`}
+                        >
+                            Take Photo
+
+                        </Button>
+                    </View>
+                </>
+            )}
         </View>
     )
 };

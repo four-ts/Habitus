@@ -22,12 +22,13 @@ const RegisterScreen = ({ navigation }) => {
   const onSubmit = async (data) => {
     const { email, password } = data;
 
-    const res = await auth
+    const res = auth
       .createUserWithEmailAndPassword(
         email.trim().toLowerCase(), password
       );
 
-    // create user info in the db 
+    // create user info in the db
+    const user.
     try {
       const user = {
         uid: res.user.uid,
@@ -36,6 +37,7 @@ const RegisterScreen = ({ navigation }) => {
       }
       const ref = db.collection('users');
       await ref.add(user);
+      console.log("success added user, now going to create goal")
 
       navigation.navigate('createGoal');
     } catch (e) {

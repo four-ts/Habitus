@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { db } from '../../../firebase';
 import { Button, Text } from 'react-native-paper';
 import tw from 'twrnc';
+import { colors } from "../../assets/colors";
 
 const CameraPreview = ({ navigation, image, retakePicture, description, setDescription }) => {
 
@@ -19,57 +20,51 @@ const CameraPreview = ({ navigation, image, retakePicture, description, setDescr
             }
             const ref = db.collection('photos');
             await ref.add(photo);
-            navigation.navigate('home');
+            navigation.navigate('homepage');
         } catch (e) {
             console.log(e);
         }
     }
     return (
-        <View style={tw`h-full`}>
-            <ScrollView style={tw`bg-red-500`}>
+        <View style={tw`mt-30`}>
+            <ScrollView style={tw``}>
                 <ImageBackground style={tw`h-100`}
                     source={{ uri: image && image.uri }}
-
                 />
-                <TouchableOpacity
-                    onPress={() => retakePicture()}
-                    style={{
-                        width: 130,
-                        height: 40,
-
-                        alignItems: 'center',
-                        borderRadius: 4
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: '#fff',
-                            fontSize: 20
-                        }}
+                <View style={tw`items-end mr-5 mt-4 `}>
+                    <TouchableOpacity
+                        onPress={() => retakePicture()}
+                        style={tw`w-2/6 rounded-lg py-2 mb-2 bg-gray-50/20 `}
                     >
-                        Re-take Photo
-                    </Text>
-                </TouchableOpacity>
-
-
-
-                <TextInput
-                    style={tw`bg-white w-full h-10`}
-                    label="Enter description"
-                    mode="outlined"
-                    onChangeText={(description) => setDescription(description)}
-                    value={description}
-                />
-                <Button
-                    mode="outlined"
-                    icon="account-plus"
-                    compact
-                    onPress={() =>
-                        postPhoto()
-                    }
-                >
-                    Post
-                </Button>
+                        <Text
+                            style={tw`items-center text-center text-lg text-slate-500`}
+                        >
+                            Retake Photo
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <Text style={tw`text-lg justify-start text-left px-5 mb-2 `}>Caption:</Text>
+                <View style={tw`flex w-full pb-2 px-5`}>
+                    <TextInput
+                        style={tw`bg-white w-full h-13`}
+                        placeholder=' Enter Caption...'
+                        mode="outlined"
+                        onChangeText={(description) => setDescription(description)}
+                        value={description}
+                    />
+                </View>
+                <View style={tw`items-center`}>
+                    <Button
+                        onPress={() => { postPhoto() }}
+                        mode="contained"
+                        compact={false}
+                        color={colors.blue}
+                        buttonColor="#fff"
+                        labelStyle={{ color: "white" }}
+                        style={tw`w-4/6 rounded-full py-2 mt-5 mb-30`}>
+                        Post
+                    </Button>
+                </View>
 
 
             </ScrollView>

@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation }) => {
       );
   }
   return (
-    <View style={tw`flex h-full pt-30 bg-${colors.primaryBg}`}>
+    <View style={tw`flex pt-30 bg-[#FAF0E4]`}>
       <Text variant="displayLarge" style={tw`text-center text-4xl font-bold pb-20`}>Habitus</Text>
       <Controller
         control={control}
