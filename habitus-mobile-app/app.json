@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-firebase",
-    "slug": "react-native-firebase",
+    "name": "habitus-mobile-app",
+    "slug": "habitus-mobile-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,13 +11,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "platforms": ["ios", "android", "web"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Why are you requesting access to      the device’s camera?",
+        "NSLocationWhenInUseUsageDescription": "Why are you requesting access to the device’s camera?"
+      },
       "supportsTablet": true
     },
     "android": {
