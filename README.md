@@ -13,6 +13,8 @@ The user can also upload a photo from their camera with a caption to also add to
 This is to support and encourage users to share their goal accomplishments and to recieve support from others.
 The final feature of the app is a mimic of a text chat capability with the users buddy. The user is able to message their buddy to talk, encourage and support each other in acheiving their shared goal.
 
+The application is our very first initial scope of our project and has limited functionality to achieve our goals in creating effective habit formation. For more information please checkout our high-fidelity [prototype](https://www.figma.com/file/AOUvquQmIBG10mJCMCqYlb/Design?node-id=27%3A3)
+
 
 ## How to setup 
 1. Ensure that you have the expo command line tool, you can follow the [tutorial](https://docs.expo.dev/get-started/installation/) to setup this on your local computer. 
