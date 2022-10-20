@@ -95,7 +95,7 @@ export default function App() {
             screenOptions={{
             }}
           >
-            {/* <Stack.Screen
+            <Stack.Screen
               name="signIn"
               component={LoginScreen}
               options={{
@@ -138,7 +138,7 @@ export default function App() {
                 },
                 headerTintColor: '#fff',
               }}
-            /> */}
+            />
 
             <Stack.Screen
               name="home"

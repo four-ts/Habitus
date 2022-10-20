@@ -24,7 +24,7 @@ const FriendScreen = ({ navigation }) => {
                     <Text style={tw`text-2xl pb-4 mx-5 mt-6`}>Your Habit Buddy!</Text>
                     <Card style={tw`bg-[#FAF0E4]`} elevation={10}>
                         <Card.Content>
-                            <View style={tw`flex flex-row justify between items-center`}>
+                            <View style={tw`flex flex-row items-center`}>
                                 <Icon name="certificate" size={45} color="black" />
 
                                 <Text style={tw`text-3xl pb-4 mx-5 mt-6`}>Sarah Smith</Text>
@@ -63,7 +63,7 @@ const FriendScreen = ({ navigation }) => {
                     <Text style={tw`text-lg pb-4 mx-5 mt-6`}>Other Friends</Text>
                     <Card style={tw`bg-[#FFE2BE]`} elevation={10}>
                         <Card.Content>
-                            <View style={tw`flex flex-row justify between items-center`}>
+                            <View style={tw`flex flex-row  items-center`}>
                                 <Icon name="certificate" size={30} color="#E9C273" />
                                 <Icon name="certificate" size={30} color="#D2651E" />
 
@@ -80,7 +80,7 @@ const FriendScreen = ({ navigation }) => {
                 <View style={tw`mt-10 mb-140`}>
                     <Card style={tw`bg-[#FFE2BE]`} elevation={10}>
                         <Card.Content>
-                            <View style={tw`flex flex-row justify between items-center`}>
+                            <View style={tw`flex flex-row  items-center`}>
                                 <Icon name="certificate" size={30} color="#E9C273" />
                                 <Icon name="certificate" size={30} color="#D2651E" />
 

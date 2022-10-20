@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         getGoalInfo();
-    }, [tasks])
+    }, [tasks, photos])
 
 
     useEffect(() => {

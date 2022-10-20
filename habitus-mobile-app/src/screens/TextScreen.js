@@ -28,7 +28,7 @@ const TextScreen = ({ navigation }) => {
 
                         <Text style={tw`text-black pt-4 text-center mb-4 `}>Today’s run was super tough 😅</Text>
                     </View>
-                    <View style={tw`justify-end text-end items-end my-8 `}>
+                    <View style={tw` items-end my-8 `}>
                         <View style={tw`bg-[#E9C273] w-4/6  rounded-lg drop-shadow-lg `}>
                             <Text style={tw`text-black pt-4 text-center mb-4  `}>IKR!! But we did it! 💪</Text>
                         </View>
