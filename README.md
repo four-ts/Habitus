@@ -30,7 +30,7 @@ expo start -c
 
 ## Walkthrough
 1. You should first see a login screen, however you are acting as a first time user and will need to register first
-![IMG_5073](https://user-images.githubusercontent.com/51497984/196981996-e857075f-ae71-4fa4-8308-79c279673e78.PNG)
+![IMG_5073](https://user-images.githubusercontent.com/51497984/196981996-e857075f-ae71-4fa4-8308-79c279673e78.PNG)| width=100)
 2. Register an account
 ![IMG_5075](https://user-images.githubusercontent.com/51497984/196982193-63821586-1683-4e75-9d63-d489f45d2c2a.PNG)
 3. Create a goal by filling the blanks
